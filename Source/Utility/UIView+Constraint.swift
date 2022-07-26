@@ -127,10 +127,10 @@ internal extension UIView {
             return
         }
         translatesAutoresizingMaskIntoConstraints = false
-        topConstraint = topAnchor.constraint(equalTo: superview.topAnchor)
-        bottomConstraint = bottomAnchor.constraint(equalTo: superview.bottomAnchor)
-        leadingConstraint = leadingAnchor.constraint(equalTo: superview.leadingAnchor)
-        trailingConstraint = trailingAnchor.constraint(equalTo: superview.trailingAnchor)
+        topConstraint = topAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.topAnchor)
+        bottomConstraint = bottomAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.bottomAnchor)
+        leadingConstraint = leadingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.leadingAnchor)
+        trailingConstraint = trailingAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.trailingAnchor)
     }
     
     func removeAllConstraints() {

@@ -30,6 +30,7 @@ open class SegementSlideViewController: UIViewController {
     internal var lastChildBouncesTranslationY: CGFloat = 0
     internal var cachedChildViewControllerIndex: Set<Int> = Set()
     
+    public var headerCanScrollContent: Bool = true
     public var headerStickyHeight: CGFloat {
         let headerHeight = headerView.frame.height.rounded(.up)
         if edgesForExtendedLayout.contains(.top) {
@@ -95,6 +96,10 @@ open class SegementSlideViewController: UIViewController {
         
     }
     
+    open func didContentViewMakeToTop() {
+        
+    }
+    
     open func didSelectContentViewController(at index: Int) {
         
     }
@@ -111,9 +116,30 @@ open class SegementSlideViewController: UIViewController {
         cachedChildViewControllerIndex.removeAll()
     }
     
+    open func removeSegementSlideScrollView() {
+        self.scrollView.removeAllConstraints()
+    }
+    
+    @objc
+    open func deallocate() {
+        
+    }
+    
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         layoutSegementSlideScrollView()
+    }
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            // Fallback on earlier versions
+            return .default
+        }
+    }
+    open override var prefersStatusBarHidden: Bool {
+        return false
     }
     
     open override func viewDidLoad() {
@@ -166,6 +192,7 @@ open class SegementSlideViewController: UIViewController {
     }
     
     deinit {
+        deallocate()
         parentKeyValueObservation?.invalidate()
         cleanUpChildKeyValueObservations()
         NotificationCenter.default.removeObserver(self, name: SegementSlideContentView.willCleanUpAllReusableViewControllersNotification, object: nil)

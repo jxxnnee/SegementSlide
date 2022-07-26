@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol SegementSlideSwitcherDataSource: class {
+public protocol SegementSlideSwitcherDataSource: AnyObject {
     var height: CGFloat { get }
     var titles: [String] { get }
 }

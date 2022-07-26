@@ -12,6 +12,7 @@ public class SegementSlideHeaderView: UIView {
     
     private weak var lastHeaderView: UIView?
     private weak var contentView: SegementSlideContentView?
+    private var isCanScrollContent: Bool = true
     
     internal override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,7 +28,7 @@ public class SegementSlideHeaderView: UIView {
         backgroundColor = .clear
     }
     
-    internal func config(_ headerView: UIView?, contentView: SegementSlideContentView) {
+    internal func config(_ headerView: UIView?, contentView: SegementSlideContentView, isCanScroll: Bool = true) {
         guard headerView != lastHeaderView else {
             return
         }
@@ -41,11 +42,17 @@ public class SegementSlideHeaderView: UIView {
         self.contentView = contentView
         addSubview(headerView)
         headerView.constraintToSuperview()
+        self.isCanScrollContent = isCanScroll
         lastHeaderView = headerView
     }
     
     public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
+        
+        guard self.isCanScrollContent else {
+            return view
+        }
+        
         guard let contentView = contentView else {
             return view
         }

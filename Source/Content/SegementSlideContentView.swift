@@ -15,7 +15,7 @@ public protocol SegementSlideContentScrollViewDelegate where Self: UIViewControl
     @objc optional var scrollView: UIScrollView { get }
 }
 
-public protocol SegementSlideContentDelegate: class {
+public protocol SegementSlideContentDelegate: AnyObject {
     var segementSlideContentScrollViewCount: Int { get }
     
     func segementSlideContentScrollView(at index: Int) -> SegementSlideContentScrollViewDelegate?

@@ -13,7 +13,7 @@ extension SegementSlideViewController {
     internal func setup() {
         view.backgroundColor = .white
         extendedLayoutIncludesOpaqueBars = true
-        edgesForExtendedLayout = []
+        edgesForExtendedLayout = [.bottom]
         setupSegementSlideViews()
         setupSegementSlideScrollView()
         setupSegementSlideHeaderView()
@@ -24,6 +24,7 @@ extension SegementSlideViewController {
     }
     
     private func setupSegementSlideViews() {
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         headerView = SegementSlideHeaderView()
         switcherView = segementSlideSwitcherView()
         contentView = SegementSlideContentView()
@@ -102,11 +103,7 @@ extension SegementSlideViewController {
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
         if headerView.topConstraint == nil {
-            headerView.topConstraint = headerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: topLayoutLength)
-        } else {
-            if headerView.topConstraint?.constant != topLayoutLength {
-                headerView.topConstraint?.constant = topLayoutLength
-            }
+            headerView.topConstraint = headerView.topAnchor.constraint(equalTo: scrollView.topAnchor)
         }
         if headerView.leadingConstraint == nil {
             headerView.leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
@@ -114,7 +111,7 @@ extension SegementSlideViewController {
         if headerView.trailingConstraint == nil {
             headerView.trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         }
-        headerView.config(innerHeaderView, contentView: contentView)
+        headerView.config(innerHeaderView, contentView: contentView, isCanScroll: self.headerCanScrollContent)
         
         switcherView.translatesAutoresizingMaskIntoConstraints = false
         if switcherView.topConstraint == nil {

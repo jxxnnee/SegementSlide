@@ -8,7 +8,6 @@
 import UIKit
 
 open class SegementSlideDefaultViewController: SegementSlideViewController {
-    
     private let defaultSwitcherView = SegementSlideDefaultSwitcherView()
     
     public override func segementSlideSwitcherView() -> SegementSlideSwitcherDelegate {
@@ -27,7 +26,7 @@ open class SegementSlideDefaultViewController: SegementSlideViewController {
     }
     
     open override var switcherHeight: CGFloat {
-        return 44
+        return 50
     }
     
     open var titlesInSwitcher: [String] {
@@ -36,6 +35,16 @@ open class SegementSlideDefaultViewController: SegementSlideViewController {
     
     open func showBadgeInSwitcher(at index: Int) -> BadgeType {
         return .none
+    }
+    
+    @objc
+    open override func deallocate() {
+        super.deallocate()
+        
+    }
+    
+    open func giveMeCyon() {
+        
     }
     
     /// reload badges in SwitcherView

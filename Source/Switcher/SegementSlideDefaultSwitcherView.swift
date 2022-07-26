@@ -24,6 +24,7 @@ public class SegementSlideDefaultSwitcherView: UIView {
     
     public private(set) var scrollView = UIScrollView()
     private let indicatorView = UIView()
+    private let indicatorBackgroundView = UIView()
     private var titleButtons: [UIButton] = []
     private var innerConfig: SegementSlideDefaultSwitcherConfig = SegementSlideDefaultSwitcherConfig.shared
     
@@ -159,19 +160,28 @@ extension SegementSlideDefaultSwitcherView {
         }
         for (index, title) in titles.enumerated() {
             let button = UIButton(type: .custom)
+            let attrString: NSMutableAttributedString = .init(string: title, attributes: [
+                .font: innerConfig.normalTitleFont,
+                .foregroundColor: innerConfig.normalTitleColor,
+                .kern: innerConfig.titleSpacing
+            ])
+            button.setAttributedTitle(attrString, for: .normal)
             button.clipsToBounds = false
-            button.titleLabel?.font = innerConfig.normalTitleFont
             button.backgroundColor = .clear
-            button.setTitle(title, for: .normal)
             button.tag = index
-            button.setTitleColor(innerConfig.normalTitleColor, for: .normal)
             button.addTarget(self, action: #selector(didClickTitleButton), for: .touchUpInside)
             scrollView.addSubview(button)
             titleButtons.append(button)
         }
+        
+        scrollView.addSubview(indicatorBackgroundView)
+        indicatorBackgroundView.layer.masksToBounds = true
+        indicatorBackgroundView.backgroundColor = innerConfig.normalTitleColor
+        
+        
         scrollView.addSubview(indicatorView)
         indicatorView.layer.masksToBounds = true
-        indicatorView.layer.cornerRadius = innerConfig.indicatorHeight/2
+//        indicatorView.layer.cornerRadius = innerConfig.indicatorHeight/2
         indicatorView.backgroundColor = innerConfig.indicatorColor
     }
     
@@ -224,22 +234,43 @@ extension SegementSlideDefaultSwitcherView {
                 return
             }
             let selectedTitleButton = titleButtons[selectedIndex]
-            selectedTitleButton.setTitleColor(innerConfig.normalTitleColor, for: .normal)
-            selectedTitleButton.titleLabel?.font = innerConfig.normalTitleFont
+            let title = selectedTitleButton.titleLabel?.text ?? ""
+            let attrString: NSMutableAttributedString = .init(string: title, attributes: [
+                .font: innerConfig.normalTitleFont,
+                .foregroundColor: innerConfig.normalTitleColor,
+                .kern: innerConfig.titleSpacing
+            ])
+            selectedTitleButton.setAttributedTitle(attrString, for: .normal)
         }
         guard index >= 0, index < count else {
             return
         }
         let titleButton = titleButtons[index]
-        titleButton.setTitleColor(innerConfig.selectedTitleColor, for: .normal)
-        titleButton.titleLabel?.font = innerConfig.selectedTitleFont
+        let title = titleButton.titleLabel?.text ?? ""
+        let attrString: NSMutableAttributedString = .init(string: title, attributes: [
+            .font: innerConfig.selectedTitleFont,
+            .foregroundColor: innerConfig.selectedTitleColor,
+            .kern: innerConfig.titleSpacing
+        ])
+        titleButton.setAttributedTitle(attrString, for: .normal)
+        
+        let indicatorWidth: CGFloat = self.innerConfig.type == .tab
+            ? (bounds.width - self.innerConfig.horizontalMargin * 2) / CGFloat(self.titleButtons.count)
+            : self.innerConfig.indicatorWidth
+        indicatorBackgroundView.frame = CGRect(
+            x: self.innerConfig.horizontalMargin,
+            y: self.frame.height - self.innerConfig.indicatorHeight + 1.0,
+            width: self.bounds.width - self.innerConfig.horizontalMargin * 2,
+            height: self.innerConfig.indicatorHeight - 1.0
+        )
         if animated, indicatorView.frame != .zero {
             UIView.animate(withDuration: 0.25) {
-                self.indicatorView.frame = CGRect(x: titleButton.frame.origin.x+(titleButton.bounds.width-self.innerConfig.indicatorWidth)/2, y: self.frame.height-self.innerConfig.indicatorHeight, width: self.innerConfig.indicatorWidth, height: self.innerConfig.indicatorHeight)
+                self.indicatorView.frame = CGRect(x: titleButton.frame.origin.x, y: self.frame.height-self.innerConfig.indicatorHeight, width: indicatorWidth, height: self.innerConfig.indicatorHeight)
             }
         } else {
-            indicatorView.frame = CGRect(x: titleButton.frame.origin.x+(titleButton.bounds.width-innerConfig.indicatorWidth)/2, y: frame.height-innerConfig.indicatorHeight, width: innerConfig.indicatorWidth, height: innerConfig.indicatorHeight)
+            indicatorView.frame = CGRect(x: titleButton.frame.origin.x, y: frame.height-innerConfig.indicatorHeight, width: indicatorWidth, height: innerConfig.indicatorHeight)
         }
+        
         if case .segement = innerConfig.type {
             var offsetX = titleButton.frame.origin.x-(scrollView.bounds.width-titleButton.bounds.width)/2
             if offsetX < 0 {

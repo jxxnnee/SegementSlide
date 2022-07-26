@@ -10,7 +10,7 @@ import UIKit
 
 public struct SegementSlideDefaultSwitcherConfig {
     
-    public static let shared = SegementSlideDefaultSwitcherConfig()
+    public static var shared = SegementSlideDefaultSwitcherConfig()
     
     public var type: SwitcherType
     public var horizontalMargin: CGFloat
@@ -19,6 +19,7 @@ public struct SegementSlideDefaultSwitcherConfig {
     public var selectedTitleFont: UIFont
     public var normalTitleColor: UIColor
     public var selectedTitleColor: UIColor
+    public var titleSpacing: CGFloat
     public var indicatorWidth: CGFloat
     public var indicatorHeight: CGFloat
     public var indicatorColor: UIColor
@@ -27,15 +28,16 @@ public struct SegementSlideDefaultSwitcherConfig {
     public var badgeHeightForCustomType: CGFloat
     public var badgeFontForCountType: UIFont
     
-    public init(type: SwitcherType = .segement,
+    public init(type: SwitcherType = .tab,
                 horizontalMargin: CGFloat = 16,
                 horizontalSpace: CGFloat = 32,
                 normalTitleFont: UIFont = UIFont.systemFont(ofSize: 15),
                 selectedTitleFont: UIFont = UIFont.systemFont(ofSize: 15, weight: .medium),
                 normalTitleColor: UIColor = UIColor.gray,
-                selectedTitleColor: UIColor = UIColor.darkGray,
+                selectedTitleColor: UIColor = UIColor.black,
+                titleSpacing: CGFloat = 0.0,
                 indicatorWidth: CGFloat = 30,
-                indicatorHeight: CGFloat = 2,
+                indicatorHeight: CGFloat = 3.0,
                 indicatorColor: UIColor = UIColor.darkGray,
                 badgeHeightForPointType: CGFloat = 9,
                 badgeHeightForCountType: CGFloat = 15,
@@ -48,6 +50,7 @@ public struct SegementSlideDefaultSwitcherConfig {
         self.selectedTitleFont = selectedTitleFont
         self.normalTitleColor = normalTitleColor
         self.selectedTitleColor = selectedTitleColor
+        self.titleSpacing = titleSpacing
         self.indicatorWidth = indicatorWidth
         self.indicatorHeight = indicatorHeight
         self.indicatorColor = indicatorColor

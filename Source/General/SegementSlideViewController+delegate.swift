@@ -13,9 +13,17 @@ extension SegementSlideViewController: UIScrollViewDelegate {
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         resetScrollViewStatus()
         resetCurrentChildViewControllerContentOffsetY()
+        
         return true
     }
     
+}
+
+extension SegementSlideViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
+    }
 }
 
 extension SegementSlideViewController: SegementSlideContentDelegate {
@@ -65,5 +73,4 @@ extension SegementSlideViewController: SegementSlideContentDelegate {
         })
         childKeyValueObservations[key] = keyValueObservation
     }
-    
 }
